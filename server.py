@@ -2,12 +2,14 @@ import socket
 import time
 import threading
 from   itertools import count
-
-HEADER_SIZE = 4
+from   socket_utils import newCommunication
 
 IP = socket.gethostbyname(socket.gethostname())
 PORT = 4242
+HEADER_SIZE = 4
 ENCODING = "utf-8"
+
+runningThreads = list()
 
 class mySocket(object):
     def __init__(self 
@@ -65,21 +67,18 @@ class mySocket(object):
         return message
 
 
-SELF_MSG = "Client {} connected to port {}!"
-MSG = "Connection established with server!"
-
-# Packet Header Template
-
-runningThreads = list()
-
-def newCommunication(server, clientSocket, clientAdress):
-    while True:    
-        rcv_msg = server.receive(clientSocket)
-        print(f"Client Ip: {clientAdress[0]}$", rcv_msg)
-
-
+serverSocket = mySocket(None
+                        ,name       = 'server' 
+                        ,ip         = IP
+                        ,port       = PORT
+                        ,family     = socket.AF_INET
+                        ,protocol   = socket.SOCK_STREAM 
+                        ,encoding   = ENCODING  
+                        ,headerSize = HEADER_SIZE
+                        ,isServer   = True
+                )
 def main():
-    serverSocket = mySocket(None
+    """     serverSocket = mySocket(None
                            ,name       = 'server' 
                            ,ip         = IP
                            ,port       = PORT
@@ -88,7 +87,7 @@ def main():
                            ,encoding   = ENCODING  
                            ,headerSize = HEADER_SIZE
                            ,isServer   = True
-                    )
+                    ) """
 
     serverSocket.initialize()
     serverSocket.listen(5)
