@@ -1,15 +1,14 @@
 import socket
 import time
 import os
-#from socket_utils import *
+from socket_utils import packetProcess, hello_txt, connection
 
-HEADER_SIZE = 4
 
 USER_NAME = input("Username: ")
 
 IP = socket.gethostbyname(socket.gethostname())
 PORT = 4242
-
+HEADER_SIZE = 4
 ENCODING = "utf-8"
 
 host = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,17 +17,12 @@ host.connect((socket.gethostname(), PORT))
 
 
 def main():
-    for i in range(1, 4):
-        print("Connecting" + i * '.'); time.sleep(i)
-        os.system('cls')
-
-    print(f"Hello {USER_NAME}! Welcome to IRC, press Q if you would like to exit.", end='\n\n')
+    connection(time.sleep)
+    os.system('cls')
+    hello_txt(USER_NAME)
 
     while True:
-        message = input(f"{USER_NAME}$ ")
-        message = message.encode(ENCODING)
-        HEADER = f"{ len(message) : <{HEADER_SIZE}}"
-        PACKET = HEADER.encode(ENCODING) + message 
+        PACKET = packetProcess(USER_NAME, HEADER_SIZE, ENCODING)
         host.send(PACKET)
 
 
