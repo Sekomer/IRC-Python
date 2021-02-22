@@ -13,8 +13,8 @@ class mySocket(object):
     def __init__(self 
                 ,sock
                 ,name 
-                ,ip           = '127.0.0.1'
-                ,port         = 42
+                ,ip
+                ,port         = 4242
                 ,family       = socket.AF_INET
                 ,protocol     = socket.SOCK_STREAM
                 ,encoding     = 'utf-8'
@@ -30,11 +30,11 @@ class mySocket(object):
         self._ENCODING        = encoding
         self._HEADER_SIZE     = headerSize
         self.isServer         = isServer
-        self.receivedMessages = 0    
+        self.receivedMessages = 0                  # Number of messages
         self.sentBytes        = 0
-        self.receivedBytes    = 0
+        self.receivedBytes    = 0                  # Without header!
         self.numClients       = 0
-        self.clientsList      = list()
+        self.clients          = dict()
 
     def initialize(self):
         self._SOCK = socket.socket(self.family, self.protocol)
@@ -45,7 +45,9 @@ class mySocket(object):
 
     def accept(self):
         self.numClients += 1
-        return self._SOCK.accept()
+        client, clientAddr = self._SOCK.accept()
+        self.clients[clientAddr[0]] = client      # ip adress => key, client socket => value
+        return (client, clientAddr)
 
     def send(self, message):
         pass
@@ -58,7 +60,7 @@ class mySocket(object):
         messageRaw = clientSocket.recv(packetSize)
         message = messageRaw.decode(encoding=ENCODING)
         self.receivedMessages += 1
-        self.receivedBytes += None
+        self.receivedBytes += packetSize
 
         return message
 
