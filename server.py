@@ -11,6 +11,7 @@ ENCODING = "utf-8"
 
 runningThreads = list()
 
+#class begin#
 class mySocket(object):
     def __init__(self 
                 ,sock
@@ -41,6 +42,10 @@ class mySocket(object):
     def initialize(self):
         self._SOCK = socket.socket(self.family, self.protocol)
         self._SOCK.bind((self.ip, self.port))
+        print("Server initialized"
+             ,f"[IP] {self.ip}"
+             ,f"[Port] {self.port}"
+             ,sep = "\n")
         
     def listen(self, num):    
         self._SOCK.listen(num)
@@ -63,22 +68,12 @@ class mySocket(object):
         message = messageRaw.decode(encoding=ENCODING)
         self.receivedMessages += 1
         self.receivedBytes += packetSize
-
         return message
+#class end#
 
 
-serverSocket = mySocket(None
-                        ,name       = 'server' 
-                        ,ip         = IP
-                        ,port       = PORT
-                        ,family     = socket.AF_INET
-                        ,protocol   = socket.SOCK_STREAM 
-                        ,encoding   = ENCODING  
-                        ,headerSize = HEADER_SIZE
-                        ,isServer   = True
-                )
 def main():
-    """     serverSocket = mySocket(None
+    serverSocket = mySocket(None
                            ,name       = 'server' 
                            ,ip         = IP
                            ,port       = PORT
@@ -87,7 +82,7 @@ def main():
                            ,encoding   = ENCODING  
                            ,headerSize = HEADER_SIZE
                            ,isServer   = True
-                    ) """
+                    )   
 
     serverSocket.initialize()
     serverSocket.listen(5)
