@@ -1,19 +1,67 @@
 import socket
 import time
 import threading
-
-from itertools import count
+from   itertools import count
 
 HEADER_SIZE = 4
 
-IP = '127.0.0.1'
+IP = socket.gethostbyname(socket.gethostname())
 PORT = 4242
 ENCODING = "utf-8"
 
+class mySocket(object):
+    def __init__(self 
+                ,sock
+                ,name 
+                ,ip           = '127.0.0.1'
+                ,port         = 42
+                ,family       = socket.AF_INET
+                ,protocol     = socket.SOCK_STREAM
+                ,encoding     = 'utf-8'
+                ,headerSize   = 4 
+                ,isServer     = False
+    ):                         
+        self._SOCK            = sock
+        self.name             = name
+        self.ip               = ip 
+        self.port             = port
+        self.family           = family
+        self.protocol         = protocol
+        self._ENCODING        = encoding
+        self._HEADER_SIZE     = headerSize
+        self.isServer         = isServer
+        self.receivedMessages = 0    
+        self.sentBytes        = 0
+        self.receivedBytes    = 0
+        self.numClients       = 0
+        self.clientsList      = list()
 
-serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverSocket.bind((socket.gethostname(), PORT))
-serverSocket.listen(5)
+    def initialize(self):
+        self._SOCK = socket.socket(self.family, self.protocol)
+        self._SOCK.bind((self.ip, self.port))
+        
+    def listen(self, num):    
+        self._SOCK.listen(num)
+
+    def accept(self):
+        self.numClients += 1
+        return self._SOCK.accept()
+
+    def send(self, message):
+        pass
+    
+    def receive(self, clientSocket):
+        packetSizeRaw = clientSocket.recv(HEADER_SIZE)
+        packetSizeString = packetSizeRaw.decode(encoding=ENCODING).split()[0]
+        packetSize = int(packetSizeString, 10)
+        
+        messageRaw = clientSocket.recv(packetSize)
+        message = messageRaw.decode(encoding=ENCODING)
+        self.receivedMessages += 1
+        self.receivedBytes += None
+
+        return message
+
 
 SELF_MSG = "Client {} connected to port {}!"
 MSG = "Connection established with server!"
@@ -22,24 +70,48 @@ MSG = "Connection established with server!"
 
 runningThreads = list()
 
-def newCommunication(clientSocket, clientAdress, message):
-    for i in count(0):    
-        packetSizeRaw = clientSocket.recv(HEADER_SIZE)
-        packetSizeString = packetSizeRaw.decode(encoding=ENCODING).split()[0]
-        print("raw:", packetSizeRaw)
-        packetSize = int(packetSizeString, 10)
-        
-        messageRaw = clientSocket.recv(packetSize)
-        message = messageRaw.decode(encoding=ENCODING)
+def newCommunication(server, clientSocket, clientAdress):
+    while True:    
+        rcv_msg = server.receive(clientSocket)
+        print(f"Client Ip: {clientAdress[0]}$", rcv_msg)
 
-        print(f"Client Ip: {clientAdress[0]}$", message)
 
 def main():
+    serverSocket = mySocket(None
+                           ,name       = 'server' 
+                           ,ip         = IP
+                           ,port       = PORT
+                           ,family     = socket.AF_INET
+                           ,protocol   = socket.SOCK_STREAM 
+                           ,encoding   = ENCODING  
+                           ,headerSize = HEADER_SIZE
+                           ,isServer   = True
+                    )
+
+    serverSocket.initialize()
+    serverSocket.listen(5)
+
     while True:
-        newClient, newClientAdress = serverSocket.accept()
-        newThread = threading.Thread(target=newCommunication, args=(newClient, newClientAdress, MSG))
-        runningThreads.append(newThread)
+        client, newClientAdress = serverSocket.accept()
+        newClientIp, newClientPort = newClientAdress
+        
+        ###################################################################
+        willbeimplemented = """
+        newClient = mySocket(sock     = client,
+                             name     = f"client{serverSocket.numClients}",
+                             ip       = newClientIp, 
+                             port     = newClientPort, 
+                             family   = serverSocket.family, 
+                             protocol = serverSocket.protocol, 
+                             isServer = False )
+        """
+        #####################################################################
+
+        newThread = threading.Thread(target = newCommunication 
+                                    ,args   = (serverSocket, client, newClientAdress) ) 
+        
         newThread.start()
+        runningThreads.append(newThread)
 
 
 if __name__ == '__main__':
