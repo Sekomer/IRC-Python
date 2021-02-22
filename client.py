@@ -18,7 +18,8 @@ host.connect((socket.gethostname(), PORT))
 
 def main():
     connection(time.sleep)
-    os.system('cls')
+    # change this to <os.system('cls')> if you are using windows
+    os.system('clear')
     hello_txt(USER_NAME)
 
     while True:
