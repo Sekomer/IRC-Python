@@ -23,6 +23,7 @@ def main():
 
     while True:
         PACKET = packetProcess(USER_NAME, HEADER_SIZE, ENCODING)
+        # Honorable mentions: Nazım the Debugger
         host.send(PACKET)
 
 
