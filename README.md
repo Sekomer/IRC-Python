@@ -3,10 +3,8 @@
 Basic IRC application based on low level socket programming and multithreading
 
 
-![png1](./img/0.png =50x50)
-
-
-![png2](./img/1.png =50x50)
+<img src="./img/0.png" width="200" height="200" />
+<img2 src="./img/1.png" width="200" height="200" />
 
 
 > Any contribution would be appreciated
