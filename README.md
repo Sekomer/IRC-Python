@@ -3,7 +3,7 @@
 
 Basic IRC application based on low level socket programming and multithreading  
   
-mySocket class
+### mySocket class
 ```python
 class mySocket(object):
     def __init__(self 
