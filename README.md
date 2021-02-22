@@ -1,4 +1,6 @@
-# IRC-Python
-Internet Relay Chat Python Implementation      
+# Internet Relay Chat Python Implementation 
 
-Any contribution would be appreciated
+Basic IRC application based on low level socket programming and multithreading
+
+
+> Any contribution would be appreciated
