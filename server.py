@@ -2,7 +2,10 @@ import socket
 import time
 import threading
 from   itertools import count
-from   socket_utils import newCommunication
+from   socket_utils import newCommunication, safeThread
+import sys
+
+OUTPUT_PATH = open('stdout.txt', 'w+')
 
 IP = socket.gethostbyname(socket.gethostname())
 PORT = 4242
@@ -66,24 +69,25 @@ class mySocket(object):
         
         messageRaw = clientSocket.recv(packetSize)
         message = messageRaw.decode(encoding=ENCODING)
+        
         self.receivedMessages += 1
         self.receivedBytes += packetSize
         return message
 #class end#
 
 
-def main():
-    serverSocket = mySocket(None
-                           ,name       = 'server' 
-                           ,ip         = IP
-                           ,port       = PORT
-                           ,family     = socket.AF_INET
-                           ,protocol   = socket.SOCK_STREAM 
-                           ,encoding   = ENCODING  
-                           ,headerSize = HEADER_SIZE
-                           ,isServer   = True
-                    )   
+serverSocket = mySocket(None
+                        ,name       = 'server' 
+                        ,ip         = IP
+                        ,port       = PORT
+                        ,family     = socket.AF_INET
+                        ,protocol   = socket.SOCK_STREAM 
+                        ,encoding   = ENCODING  
+                        ,headerSize = HEADER_SIZE
+                        ,isServer   = True
+                )
 
+def main(serverSocket):
     serverSocket.initialize()
     serverSocket.listen(5)
 
@@ -104,11 +108,25 @@ def main():
         #####################################################################
 
         newThread = threading.Thread(target = newCommunication 
-                                    ,args   = (serverSocket, client, newClientAdress) ) 
+                                    ,args   = (serverSocket 
+                                              ,client
+                                              ,newClientAdress
+                                              ,OUTPUT_PATH )) 
         
         newThread.start()
         runningThreads.append(newThread)
 
+def kernel():
+    mainThread = safeThread(target = main ,args = (serverSocket,), daemon=True)
+    mainThread.start()
+
+    while True:
+        opt = input("root$ ")
+
+        # Honorable mentions: Nazım the Debugger
+        if opt == 'killmain':
+            mainThread.stop()
+            break 
 
 if __name__ == '__main__':
-    main()
+    kernel()

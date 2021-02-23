@@ -1,7 +1,11 @@
 import socket
 import time
 import os
-from socket_utils import packetProcess, hello_txt, connection
+from socket_utils import packetProcess    \
+                        ,hello_txt        \
+                        ,connection       \
+                        ,clearScreen      \
+                        ,retire           \
 
 
 USER_NAME = input("Username: ")
@@ -13,13 +17,12 @@ ENCODING = "utf-8"
 
 host = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host.connect((socket.gethostname(), PORT))
-#sock.setblocking(False)
+host.setblocking(False)
 
 
 def main():
-    connection(time.sleep)
-    # change this to <os.system('cls')> if you are using windows
-    os.system('clear')
+    connection()
+    clearScreen()
     hello_txt(USER_NAME)
 
     while True:
