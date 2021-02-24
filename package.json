@@ -1,0 +1,16 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "olmasın",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "module": "^1.2.5",
+    "net": "^1.0.2",
+    "prompt-sync": "^4.2.0"
+  }
+}
