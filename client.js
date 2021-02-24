@@ -1,25 +1,28 @@
-var net = require('net');
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
-var HOST = '127.0.0.1';
-var PORT = 4242;
+//let net = require('net');
+let prompt = require('prompt-sync')();
 
-var client = new net.Socket();
-
-const prompt = require('prompt-sync')();
 const name = prompt('Username: ');
 
-var encode = s => decodeURIComponent(escape(s));
+// Encoder 
+let encode = s => decodeURIComponent(escape(s));
+
+const HOST = '127.0.0.1';
+const PORT = 4242;
+let client = new net.Socket();
+
 
 function packetProcess(name) {
     const data = prompt(`${name}: `);
     
-    if (data == 'Q' || data == 'q') {
+    if (data == 'Q' || data == 'q')
         return -1
-    }
 
     const encoded = encode(data)
     const length = encoded.length
-    var header = `${length}`.padEnd(4)
+    const header = `${length}`.padEnd(4)
     
     const packet = encode(header + encoded) 
     
@@ -28,10 +31,7 @@ function packetProcess(name) {
 
 client.connect(PORT, HOST, () => {
     console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-
 });
-
-client.on('connect', main)
 
 function main() {
     while (true) {
@@ -44,6 +44,10 @@ function main() {
         client.write(packet)
     }
 }
+
+client.on('connect', main)
+
+
 
 //const worker = require('worker_threads');
 

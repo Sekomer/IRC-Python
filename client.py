@@ -11,7 +11,8 @@ from socket_utils import packetProcess    \
 
 USER_NAME = input("Username: ")
 
-IP = socket.gethostbyname(socket.gethostname())
+#IP = socket.gethostbyname(socket.gethostname())
+IP = '127.0.0.1'
 PORT = 4242
 PLATFORM = platform.system()
 HEADER_SIZE = 4
@@ -19,7 +20,7 @@ ENCODING = "utf-8"
 
 
 host = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host.connect((socket.gethostname(), PORT))
+host.connect((IP, PORT))
 host.setblocking(False)
 
 
