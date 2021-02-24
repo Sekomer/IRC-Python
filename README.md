@@ -6,8 +6,8 @@ Basic IRC application based on low level socket programming and multithreading
   
 > # Installation and running the Server
 Clone the repository
-```
->>> git clone https://github.com/Sekomer/IRC-Python
+```bash
+$ git clone https://github.com/Sekomer/IRC-Python
 ```  
 Give execute permission to scripts
 ```
