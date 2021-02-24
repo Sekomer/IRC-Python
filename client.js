@@ -1,6 +1,4 @@
-const { time } = require('console');
 var net = require('net');
-const { mainModule } = require('process');
 
 var HOST = '127.0.0.1';
 var PORT = 4242;
