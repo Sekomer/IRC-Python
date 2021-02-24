@@ -4,22 +4,22 @@
 Basic IRC application based on low level socket programming and multithreading  
   
   
-> # Installation and running the Server
+> ## Installation and running the Server
 Clone the repository
 ```bash
 $ git clone https://github.com/Sekomer/IRC-Python
 ```  
 Give execute permission to scripts
 ```
->>> chmod 777 server.py client.py
+$ chmod 777 server.py client.py
 ```  
 Execute Server
 ```
->>> ./server.py   # If default interpreter is Python2 => python3 server.py
+$ ./server.py   # If default interpreter is Python2 => python3 server.py
 ```
-># Client Side  
+>## Client Side  
 ```
->>> ./client.py   # If default interpreter is Python2 => python3 client.py
+$ ./client.py   # If default interpreter is Python2 => python3 client.py
 ```
 
 > Any contribution would be appreciated
