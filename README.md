@@ -1,5 +1,5 @@
 # Internet Relay Chat Python Implementation 
-### Unfinished project, just started doing it    
+### Unfinished project    
   
 Basic IRC application based on low level socket programming and multithreading  
   
